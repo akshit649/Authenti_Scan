@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthentiScan | AI Content Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/particles.css">
+</head>
+<body>
+    <!-- Particle.js Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Animated Header -->
+        <header class="animate__animated animate__fadeInDown">
+            <div class="logo-container">
+                <i class="fas fa-shield-alt logo-icon"></i>
+                <h1 class="logo-text">Authenti<span>Scan</span></h1>
+            </div>
+            <p class="tagline">AI-powered content authenticity verification</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content-wrapper animate__animated animate__fadeIn">
+            <!-- Tab Navigation -->
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-deepfake-tab" data-bs-toggle="tab" data-bs-target="#nav-deepfake" type="button" role="tab">
+                        <i class="fas fa-video"></i> Deepfake Detection
+                    </button>
+                    <button class="nav-link" id="nav-fakenews-tab" data-bs-toggle="tab" data-bs-target="#nav-fakenews" type="button" role="tab">
+                        <i class="fas fa-newspaper"></i> Fake News Detection
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="nav-tabContent">
+                <!-- Deepfake Tab -->
+                <div class="tab-pane fade show active" id="nav-deepfake" role="tabpanel">
+                    <div class="card glass-card">
+                        <div class="card-body">
+                            <h2 class="card-title"><i class="fas fa-video"></i> Deepfake Video Analysis</h2>
+                            <p class="card-subtitle">Upload a video to check for AI-generated manipulations</p>
+                            
+                            <div id="deepfake-upload-container" class="upload-area">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <input type="file" id="deepfake-upload" accept="video/*" class="d-none">
+                                <button id="deepfake-upload-btn" class="btn btn-primary btn-glow">
+                                    <i class="fas fa-folder-open"></i> Select Video File
+                                </button>
+                                <p class="upload-hint">or drag & drop video here</p>
+                                <p class="formats">Supported formats: MP4, AVI, MOV, MKV</p>
+                            </div>
+                            
+                            <div id="deepfake-progress" class="d-none">
+                                <div class="progress-container">
+                                    <div class="progress-info">
+                                        <span id="deepfake-progress-status">Processing video...</span>
+                                        <span id="deepfake-progress-percent">0%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div id="deepfake-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="deepfake-result" class="d-none result-container">
+                                <div class="result-header">
+                                    <h3 id="deepfake-result-title"></h3>
+                                    <div class="confidence-badge" id="deepfake-confidence-badge"></div>
+                                </div>
+                                
+                                <div class="confidence-meter-container">
+                                    <div class="confidence-labels">
+                                        <span>Real</span>
+                                        <span>Deepfake</span>
+                                    </div>
+                                    <div class="confidence-meter">
+                                        <div id="deepfake-confidence-fill" class="confidence-fill"></div>
+                                    </div>
+                                    <div class="confidence-value" id="deepfake-confidence-value"></div>
+                                </div>
+                                
+                                <div id="deepfake-result-details" class="result-details"></div>
+                                
+                                <div class="result-actions">
+                                    <button id="deepfake-reset-btn" class="btn btn-outline-light">
+                                        <i class="fas fa-redo"></i> Analyze Another
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fake News Tab -->
+                <div class="tab-pane fade" id="nav-fakenews" role="tabpanel">
+                    <div class="card glass-card">
+                        <div class="card-body">
+                            <h2 class="card-title"><i class="fas fa-newspaper"></i> Fake News Analysis</h2>
+                            <p class="card-subtitle">Enter text to check for misinformation or fake news</p>
+                            
+                            <form id="fakenews-form">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="fakenews-text" placeholder="Paste news article here"></textarea>
+                                    <label for="fakenews-text">News content to analyze...</label>
+                                </div>
+                                <div class="text-counter">
+                                    <span id="text-counter">0</span> characters
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-glow">
+                                    <i class="fas fa-search"></i> Analyze Text
+                                </button>
+                            </form>
+                            
+                            <div id="fakenews-progress" class="d-none">
+                                <div class="spinner-container">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p>Analyzing text content...</p>
+                                </div>
+                            </div>
+                            
+                            <div id="fakenews-result" class="d-none result-container">
+                                <div class="result-header">
+                                    <h3 id="fakenews-result-title"></h3>
+                                    <div class="confidence-badge" id="fakenews-confidence-badge"></div>
+                                </div>
+                                
+                                <div class="confidence-meter-container">
+                                    <div class="confidence-labels">
+                                        <span>Authentic</span>
+                                        <span>Fake</span>
+                                    </div>
+                                    <div class="confidence-meter">
+                                        <div id="fakenews-confidence-fill" class="confidence-fill"></div>
+                                    </div>
+                                    <div class="confidence-value" id="fakenews-confidence-value"></div>
+                                </div>
+                                
+                                <div id="fakenews-result-details" class="result-details"></div>
+                                
+                                <div class="text-snippet-container">
+                                    <h4><i class="fas fa-quote-left"></i> Analyzed Text</h4>
+                                    <div id="fakenews-text-snippet" class="text-snippet"></div>
+                                </div>
+                                
+                                <div class="result-actions">
+                                    <button id="fakenews-reset-btn" class="btn btn-outline-light">
+                                        <i class="fas fa-redo"></i> Analyze Another
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="animate__animated animate__fadeInUp">
+            <p class="disclaimer">
+                <i class="fas fa-info-circle"></i> Results are AI-generated probabilities and should be verified with additional sources.
+            </p>
+            <div class="footer-links">
+                <a href="#" class="footer-link"><i class="fas fa-question-circle"></i> Help</a>
+                <a href="#" class="footer-link"><i class="fas fa-lock"></i> Privacy</a>
+                <a href="#" class="footer-link"><i class="fas fa-envelope"></i> Contact</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
